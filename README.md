@@ -1,4 +1,5 @@
 ## Orders and Number Generate Services
+
 Этот репозиторий содержит два микросервиса:
 
 Number Generate Service — генерирует уникальные номера заказов.
@@ -8,11 +9,13 @@ Orders Service — управляет заказами и взаимодейст
 
 ## Описание задания
 #### Number Generate Service
+[ссылка на репозиторий](https://github.com/Sirrin-wq/number-generate-service)
 - Генерирует уникальный номер заказа (5 символов) и текущую дату в формате YYYYMMDD.
 - Предоставляет REST API для получения номера заказа.
 - Использует MongoDB для хранения сгенерированных номеров.
 
 #### Orders Service
+[ссылка на репозиторий](https://github.com/Sirrin-wq/orders-service)
 - Управляет заказами и предоставляет REST API для:
     - Создания заказа.
     - Получения заказа по его идентификатору. 
