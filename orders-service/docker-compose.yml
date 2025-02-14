@@ -1,0 +1,52 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: orders-postgres
+    environment:
+      POSTGRES_DB: orders_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  number-generate-service:
+    image: number-generate-service:latest
+    container_name: number-generate-service
+    ports:
+      - "80:80"
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongodb
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: order_numbers_db
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: orders-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  orders-service:
+    build: .
+    container_name: orders-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      NUMBER_GENERATE_SERVICE_URL: http://number-generate-service:8080/numbers
+    depends_on:
+      - postgres
+      - number-generate-service
+
+volumes:
+  postgres_data:
+  mongodb_data:
